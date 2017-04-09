@@ -84,6 +84,7 @@ function handle_parsing_errors(src, ast){
 function compile_test(node){
 	return compile_concat(node)
 }
+
 function init_parser(parser){
 	expressions=fs.readFileSync('grammar.ebnf').toString()
 	var lang_rules = ebnf_to_def(expressions)
@@ -96,6 +97,20 @@ function init_parser(parser){
 	build_parser(parser)
 }
 
+function handle_errors(src, ast){
+	var parsed_chars = ast.src.next.src
+	if (parsed_chars < src.length) {
+		var back = 20
+		if (parsed_chars < back) back = parsed_chars
+		console.log(src.replace(/\n/g,'\\n').substr(parsed_chars - back, back) +''+src.substr(parsed_chars, 40))
+		var s = ''
+		while (s.length < back) s += ' '
+		s += color(9)+'^'+color()+' parsing error.'
+		console.log(s)
+		return 
+	}
+}
+
 function main(){
 	var parser = create_parser()
 	init_parser(parser)
@@ -103,7 +118,7 @@ function main(){
 	var root_token = lexmap.lex(src).next
 	var ast = parser.parse('root', root_token)
 	if (handle_errors(src, ast)) return
-	show_ast(ast)
+	//show_ast(ast)
 	if (ast) {
 		var ast = reduce_ast(ast)
 		var output = compile_ast(ast)
