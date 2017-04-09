@@ -1,0 +1,23 @@
+#!/v/js/shortcut/tester.js
+/*
+test run
+555
+
+test code
+
+function main() {
+	console.log(555)
+}
+
+main
+
+test end
+*/
+
+fun add x y {
+	ret x + y
+}
+
+fun main {
+	log 555
+}

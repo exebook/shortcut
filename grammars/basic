@@ -1,0 +1,20 @@
+id = <id>
+num = <num>
+str = <str>
+literal = (num | str)
+group = '(' expr ')'
+primary = (rvalue | id | literal | group)
+term = primary { ('+' | '-') primary }
+factor = term { ('*' | '/') term }
+logic = factor { ( 'and' | 'or' ) factor }
+compare = logic { ('==' | '!=') logic }
+expr = compare
+args = expr { ',' expr }
+member = '.' id
+index = '[' [ expr ] ']'
+call = '(' [ args ] ')'
+lcall = call (member | index)
+lvalue = id { (member | index | lcall) }
+rvalue = id { (member | index | call) }
+assign = lvalue '=' expr
+root = assign
